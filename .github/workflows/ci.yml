@@ -1,0 +1,41 @@
+name: Company CI
+
+on:
+
+  push:
+
+    branches:
+
+      - main
+
+  pull_request:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Check Dockerfile
+
+        run: test -f Dockerfile
+
+      - name: Build Image
+
+        run: docker build -t company .
+
+      - name: Run Container
+
+        run: docker run -d -p 8080:80 company
+
+      - name: Test Website
+
+        run: |
+
+          sleep 5
+
+          curl http://localhost:8080
